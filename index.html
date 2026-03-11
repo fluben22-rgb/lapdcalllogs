@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>CRIME-STARS v4.5 - LASD LOG TERMINAL</title>
+    <title>CRIME-STARS v4.5 - LAPD LOG TERMINAL</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -288,7 +288,7 @@
     <div id="auth-box" style="width:300px;">
       <div class="window-title">SECURE SYSTEM ACCESS</div>
       <label>EMAIL ADDRESS:</label>
-      <input type="text" id="auth-email" placeholder="user@lasd.org">
+      <input type="text" id="auth-email" placeholder="00000@lapd.org">
       <label style="margin-top:8px;">PASSWORD:</label>
       <input type="password" id="auth-pass">
       <div id="auth-error">INVALID CREDENTIALS. ACCESS DENIED.</div>
@@ -300,17 +300,17 @@
       <label>ROLE:</label>
       <select id="user-role" onchange="toggleLogonFields()">
         <option value="Dispatcher">Dispatcher</option>
-        <option value="Deputy">Field Deputy</option>
+        <option value="Officer">Officer</option>
       </select>
       <label>NAME / CALLSIGN:</label>
-      <input type="text" id="user-id" placeholder="267-B">
+      <input type="text" id="user-id" placeholder="6A45">
       <label id="rank-label">RANK:</label>
-      <input type="text" id="user-rank" placeholder="DEPUTY">
+      <input type="text" id="user-rank" placeholder="PO2">
       <label>ASSIGNMENT:</label>
-      <input type="text" id="user-assignment" placeholder="PLM PATROL">
-      <div id="tag-config-area">
-        <label>STARTING TAG #:</label>
-        <input type="number" id="tag-start" value="0">
+      <input type="text" id="user-assignment" placeholder="HWD PATROL">
+      <div id="id-config-area">
+        <label>STARTING INCID #:</label>
+        <input type="number" id="id-start" value="0">
       </div>
       <div id="ride-along-btn-area" class="hidden">
         <button class="win-btn" style="margin-top:10px;" onclick="toggleRideAlong(true)">+ ADD RIDE ALONG / PARTNER</button>
@@ -318,15 +318,15 @@
       <div id="ride-along-inputs" class="hidden ride-along-section">
         <label>PARTNER NAME:</label>
         <input type="text" id="ra-name">
-        <label>BADGE #:</label>
-        <input type="text" id="ra-badge">
+        <label>SERIAL #:</label>
+        <input type="text" id="ra-serial">
         <label>RANK:</label>
         <input type="text" id="ra-rank">
         <button class="win-btn" style="margin-top:5px;" onclick="toggleRideAlong(false)">REMOVE PARTNER</button>
       </div>
       <button class="win-btn" style="width:100%; margin-top:15px; height:35px; background:#d0d0d0;" onclick="doLogin()">INITIALIZE TERMINAL</button>
     </div>
-    <!-- deputy log validation modal -->
+    <!-- officer log validation modal -->
     <div id="modal-overlay" class="modal-overlay">
       <div id="sig-modal" class="win-modal">
         <div class="window-title">OFFICIAL LOG VALIDATION</div>
@@ -351,11 +351,11 @@
       <div class="win-modal">
         <div class="window-title">UPDATE USER DATA</div>
         <div style="padding:10px;">
-          <label>NEW DEPUTY CALLSIGN:</label>
+          <label>NEW OFFICER CALLSIGN:</label>
           <input type="text" id="edit-user-id">
-          <label style="margin-top:8px;">NEW DEPUTY ASSIGNMENT:</label>
+          <label style="margin-top:8px;">NEW OFFICER ASSIGNMENT:</label>
           <input type="text" id="edit-user-assignment">
-          <label style="margin-top:8px;">NEW DEPUTY RANK:</label>
+          <label style="margin-top:8px;">NEW OFFICER RANK:</label>
           <input type="text" id="edit-user-rank">
           <div style="display:flex; gap:10px; margin-top:20px;">
             <button class="win-btn" style="flex:1; height:30px; color:#000080;" onclick="updateUserData()">UPDATE</button>
@@ -385,28 +385,28 @@
     <!-- top bar area, for commands -->
     <div id="top-bar">
       <div id="cmd-container" style="display:flex; gap:5px; background:#000; padding:3px; border:2px inset #fff;">
-        <span style="color:#0f0; font-size:11px;">TAG#</span>
-        <input type="text" id="edit-tag-num" style="background:transparent; color:#0f0; border:none; width:50px; outline:none;">
-        <button class="win-btn" onclick="loadTagForEdit()">LOAD</button>
+        <span style="color:#0f0; font-size:11px;">INC#</span>
+        <input type="text" id="edit-inc-num" style="background:transparent; color:#0f0; border:none; width:50px; outline:none;">
+        <button class="win-btn" onclick="loadIncForEdit()">LOAD</button>
         <button class="win-btn" onclick="updateEntry()" style="color:#000080">UPDATE</button>
       </div>
       <button class="win-btn" onclick="openUserDataModal()">CHANGE USER DATA</button>
       <button class="win-btn" onclick="clearInputFields()">CLEAR FIELDS</button>
       <div id="status-btns" style="display:flex; gap:5px; margin-left:10px; border-left:1px solid #808080; padding-left:10px;">
-        <button class="win-btn" onclick="quickStatus('909')" style="background:#ccffcc;">909</button>
-        <button class="win-btn" onclick="quickStatus('10-8')" style="background:#ccffcc;">10-8</button>
-        <button class="win-btn" onclick="quickStatus('10-97')" style="background:#ffffcc;">10-97</button>
-        <button class="win-btn" onclick="quickStatus('10-6')" style="background:#ffffcc;">10-6</button>
-        <button class="win-btn" onclick="quickStatus('10-7')" style="background:#e0e0e0;">10-7</button>
+        <button class="win-btn" onclick="quickStatus('C6')" style="background:#f1f109;">C6</button>
+        <button class="win-btn" onclick="quickStatus('AVALC4')" style="background:#03ff18;">AVAL/C4</button>
+        <button class="win-btn" onclick="quickStatus('BUSY')" style="background:#f1f109;">BUSY</button>
+        <button class="win-btn" onclick="quickStatus('SOW')" style="background:#03ff18;">SOW</button>
+        <button class="win-btn" onclick="quickStatus('EOW')" style="background:#8a8585;">EOW</button>
       </div>
       <div style="flex-grow:1"></div>
       <button class="win-btn" onclick="triggerPrintFlow()" style="background:#ffdbdb;">PRINT DAILY LOG</button>
       <button class="win-btn" onclick="handleLogoff()">LOGOFF</button>
     </div>
-    <!-- MAIN CONTENT AREA FOR DEPUTIES & DISPATCH -->
+    <!-- MAIN CONTENT AREA FOR OFFICERS & DISPATCH -->
     <div id="main-app">
       <!-- fix this not showing on smaller displays correctly, its def in CSS rules -->
-      <div class="window-title">LASD ACTIVITY SYSTEM - [LOGGED: <span id="stat-user"></span>] </div>
+      <div class="window-title">LAPD ACTIVITY SYSTEM - [LOGGED: <span id="stat-user"></span>] </div>
       <div class="form-area" id="input-form">
         <div id="field-unit">
           <label>PRIMARY UNIT</label>
@@ -417,7 +417,7 @@
           <select id="f-type">
             <option value="SIC">SIC</option>
             <option value="911">911</option>
-            <option value="DESK">DESK</option>
+            <option value="WC">WC</option>
             <option value="OTHER">OTHER</option>
           </select>
         </div>
@@ -443,8 +443,8 @@
             <button class="win-btn now-btn" onclick="setNow('f-end')">NOW</button>
           </div>
         </div>
-        <div id="field-report" class="deputy-only hidden">
-          <label>REPORT # (URN)</label>
+        <div id="field-report" class="officer-only hidden">
+          <label>REPORT # (INC ID)</label>
           <input type="text" id="f-report" placeholder="Optional">
         </div>
         <div id="field-notes">
@@ -467,9 +467,9 @@
         <div class="dispatch-only" style="display:flex; gap:10px; align-items:center; padding-top:10px;">
           <label style="display:inline-flex; align-items:center; gap:3px;">CMP <input type="checkbox" id="f-cmplt" style="width:15px; height:15px;">
           </label>
-          <label style="display:inline-flex; align-items:center; gap:3px;">SAM <input type="checkbox" id="f-sam" style="width:15px; height:15px;">
+          <label style="display:inline-flex; align-items:center; gap:3px;">SUPER <input type="checkbox" id="f-sup" style="width:15px; height:15px;">
           </label>
-          <label style="display:inline-flex; align-items:center; gap:3px;">AERO <input type="checkbox" id="f-aero" style="width:15px; height:15px;">
+          <label style="display:inline-flex; align-items:center; gap:3px;">AIR <input type="checkbox" id="f-air" style="width:15px; height:15px;">
           </label>
         </div>
       </div>
@@ -494,14 +494,14 @@
     </div>
     <div id="main-app-calls" style="background: black;">
         <br />
-        <div class="window-title">PREVIEW WINDOW: LASD CALL MONITOR</div>
+        <div class="window-title">PREVIEW WINDOW: LAPD CALL MONITOR</div>
         <div class="scroll-area" style="background-color: black; border: 0px; color: green;">
             <table id="test-table">
                 <thead style="background-color: black !important; color: red;">
                    <tr>
                      <th style="width: 10ch;">ID</th> 
                      <th style="width: 20ch;">CREATED AT</th> 
-                     <th style="width: 15ch;">TAG</th>
+                     <th style="width: 15ch;">INC#</th>
                      <th style="width: 7ch;">UNIT</th>
                      <th style="width: 10ch;">CALL TYPE</th>
                      <th style="width: 10ch;">CALL CODE</th>
@@ -512,8 +512,8 @@
                      <th style="width: auto;">NOTES</th> 
                      <th style="width: 12ch;">HANDLE</th>
                      <th style="width: 6ch;">CMPLT?</th>
-                     <th style="width: 5ch;">SAM?</th>
-                     <th style="width: 6ch;">AERO?</th>
+                     <th style="width: 5ch;">SUP?</th>
+                     <th style="width: 6ch;">AIR?</th>
                      <th style="width: 10ch;">LOGGED BY</th>
                    </tr>
                 </thead>
@@ -544,7 +544,7 @@
       let allCalls = []; 
       let lastEvent = { type: null, id: null };
       let currentView = { type: 'all', value: null };
-      let tagCounter = null;
+      let incCounter = null;
       let logs = [];
       let sessionData = {
         user: "",
@@ -553,7 +553,7 @@
         assignment: "",
         rideAlong: false,
         raName: "",
-        raBadge: "",
+        raSerial: "",
         raRank: "",
         signOff: null
       };
@@ -609,7 +609,7 @@
           row.innerHTML = `
             <td>${entry.id.substring(0,8)}...</td>
             <td style="font-size: 10px; color: #ffffff;">${entry.created_at.split('.')[0]}</td>
-            <td style="color: #ffffff;">${entry.tag || '--'}</td>
+            <td style="color: #ffffff;">${entry.incid || '--'}</td>
             <td style="color: #ffffff;">${entry.unit}</td>
             <td style="color: #ffffff;">${entry.call_type}</td>
             <td style="color: #ffffff;">${entry.call_code || '--'}</td>
@@ -620,8 +620,8 @@
             <td style="color: #00ff00; text-align: left;">${entry.notes || ''}</td>
             <td style="color: #ffffff;">${entry.handle || '--'}</td>
             <td style="color: #ffffff;">${entry.is_complete ? '[X]' : '[ ]'}</td>
-            <td style="color: #ffffff;">${entry.is_sam ? '[X]' : '[ ]'}</td>
-            <td style="color: #ffffff;">${entry.is_aero ? '[X]' : '[ ]'}</td>
+            <td style="color: #ffffff;">${entry.is_supervisor ? '[X]' : '[ ]'}</td>
+            <td style="color: #ffffff;">${entry.is_airship ? '[X]' : '[ ]'}</td>
             <td style="color: #ffffff;">${entry.logged_by}</td>
           `;
         });
@@ -712,8 +712,8 @@
             roleSelect.value = "Dispatcher";
             roleSelect.disabled = true;
             toggleLogonFields();
-          } else if (userPerms === "DEPUTY") {
-            roleSelect.value = "Deputy";
+          } else if (userPerms === "OFFICER") {
+            roleSelect.value = "Officer";
             roleSelect.disabled = true;
             toggleLogonFields();
           } else if (userPerms === "CALL") {
@@ -738,10 +738,10 @@
       }
 
       function toggleLogonFields() {
-        const isDeputy = document.getElementById('user-role').value === "Deputy";
-        document.getElementById('tag-config-area').classList.toggle('hidden', isDeputy);
-        document.getElementById('ride-along-btn-area').classList.toggle('hidden', !isDeputy);
-        document.getElementById('rank-label').innerText = isDeputy ? "RANK (REQUIRED):" : "RANK:";
+        const isOfficer = document.getElementById('user-role').value === "Officer";
+        document.getElementById('id-config-area').classList.toggle('hidden', isOfficer);
+        document.getElementById('ride-along-btn-area').classList.toggle('hidden', !isOfficer);
+        document.getElementById('rank-label').innerText = isOfficer ? "RANK (REQUIRED):" : "RANK:";
       }
       
       function toggleRideAlong(show) {
@@ -772,7 +772,7 @@
         sessionData.assignment = document.getElementById('edit-user-assignment').value;
         sessionData.rank = document.getElementById('edit-user-rank').value;
         document.getElementById('stat-user').innerText = `${sessionData.rank} ${sessionData.user}`;
-        if (sessionData.role === "Deputy") {
+        if (sessionData.role === "Officer") {
           document.getElementById('f-unit').value = sessionData.user;
         }
         closeModal('user-data-overlay');
@@ -786,7 +786,7 @@
           if (el) el.value = "";
         });
         document.getElementById('f-end').value = "####";
-        ['f-cmplt', 'f-sam', 'f-aero'].forEach(c => {
+        ['f-cmplt', 'f-sup', 'f-air'].forEach(c => {
           const el = document.getElementById(c);
           if (el) el.checked = false;
         });
@@ -814,22 +814,22 @@
         const userAsgn = document.getElementById('user-assignment').value;
         const role = document.getElementById('user-role').value;
         if (!userId) return alert("NAME / CALLSIGN IS REQUIRED.");
-        if (role === "Deputy" && !userRank) return alert("RANK IS REQUIRED FOR FIELD DEPUTIES.");
+        if (role === "Officer" && !userRank) return alert("RANK IS REQUIRED FOR FIELD OFFICERS.");
         sessionData.user = userId;
         sessionData.rank = userRank || "DISPATCHER";
         sessionData.assignment = userAsgn || "N/A";
         sessionData.role = role;
         if (sessionData.rideAlong) {
           sessionData.raName = document.getElementById('ra-name').value;
-          sessionData.raBadge = document.getElementById('ra-badge').value;
+          sessionData.raSerial = document.getElementById('ra-serial').value;
           sessionData.raRank = document.getElementById('ra-rank').value;
         }
         const dOnly = document.querySelectorAll('.dispatch-only');
-        const depOnly = document.querySelectorAll('.deputy-only');
-        if (sessionData.role === "Deputy") {
-          tagCounter = "";
+        const ofcOnly = document.querySelectorAll('.officer-only');
+        if (sessionData.role === "Officer") {
+          incCounter = "";
           dOnly.forEach(el => el.classList.add('hidden'));
-          depOnly.forEach(el => el.classList.remove('hidden'));
+          ofcOnly.forEach(el => el.classList.remove('hidden'));
           document.getElementById('f-unit').value = sessionData.user;
           document.getElementById('f-unit').readOnly = true;
           document.getElementById('input-form').style.gridTemplateColumns = "100px 1fr 80px 80px 120px";
@@ -840,19 +840,19 @@
 						<th>LOCATION</th>
 						<th>START</th>
 						<th>END</th>
-						<th>REPORT #</th>
+						<th>INC ID</th>
 						<th>NARRATIVE</th>
 					</tr>`;
         } else {
-          tagCounter = parseInt(document.getElementById('tag-start').value);
+          incCounter = parseInt(document.getElementById('id-start').value);
           dOnly.forEach(el => el.classList.remove('hidden'));
-          depOnly.forEach(el => el.classList.add('hidden'));
+          ofcOnly.forEach(el => el.classList.add('hidden'));
           document.getElementById('f-unit').readOnly = false;
           document.getElementById('input-form').style.gridTemplateColumns = "repeat(6, 1fr)";
           document.getElementById('field-notes').style.gridColumn = "span 3";
           document.getElementById('log-head').innerHTML = `
 					<tr>
-						<th>TAG</th>
+						<th>INCID</th>
 						<th>UNIT</th>
 						<th>TYPE</th>
 						<th>CODE</th>
@@ -862,8 +862,8 @@
 						<th>NOTES</th>
 						<th>RESP</th>
 						<th>CMP</th>
-						<th>SAM</th>
-						<th>AERO</th>
+						<th>SUP</th>
+						<th>AIR</th>
 					</tr>`;
         }
         document.getElementById('stat-user').innerText = `${sessionData.rank} ${sessionData.user}`;
@@ -888,7 +888,7 @@
         }
       }
       
-      function generateDeputyTag() {
+      function generateOfficerIncID() {
         const now = new Date();
         const mm = String(now.getMonth() + 1).padStart(2, '0');
         const dd = String(now.getDate()).padStart(2, '0');
@@ -899,27 +899,27 @@
       
       //-- ADD DAILY LOG ENTRY --\\
       async function addEntry() {
-        let finalTag = null;
-        if (sessionData.role === "Dispatcher" && typeof tagCounter === 'number') {
-          finalTag = String(tagCounter);
+        let finalIncId = null;
+        if (sessionData.role === "Dispatcher" && typeof incCounter === 'number') {
+          finalIncId = String(incCounter);
         } else {
-          finalTag = generateDeputyTag();
+          finalIncId = generateOfficerIncID();
         }
         
         const entryData = {
-          tag: finalTag, // Logged in database
+          incid: finalIncId, 
           unit: document.getElementById('f-unit').value,
           call_type: sessionData.role === "Dispatcher" ? document.getElementById('f-type').value : "SIC",
           call_code: sessionData.role === "Dispatcher" ? document.getElementById('f-callcode').value : "",
           location: document.getElementById('f-loc').value,
           time_start: document.getElementById('f-start').value || "0000",
           time_end: document.getElementById('f-end').value,
-          report_num: sessionData.role === "Deputy" ? document.getElementById('f-report').value : "",
+          report_num: sessionData.role === "Officer" ? document.getElementById('f-report').value : "",
           notes: document.getElementById('f-notes').value,
           handle: sessionData.role === "Dispatcher" ? document.getElementById('f-handle').value : "",
           is_complete: document.getElementById('f-cmplt')?.checked || false,
-          is_sam: document.getElementById('f-sam')?.checked || false,
-          is_aero: document.getElementById('f-aero')?.checked || false,
+          is_supervisor: document.getElementById('f-sup')?.checked || false,
+          is_airship: document.getElementById('f-air')?.checked || false,
           logged_by: sessionData.user
         };
         
@@ -940,14 +940,14 @@
           callcode: entryData.call_code,
           report: entryData.report_num,
           cmplt: entryData.is_complete,
-          sam: entryData.is_sam,
-          aero: entryData.is_aero
+          sup: entryData.is_supervisor,
+          air: entryData.is_airship
         };
         
         logs.unshift(logForUI);
         
-        if (sessionData.role === "Dispatcher" && typeof tagCounter === 'number') {
-          tagCounter++;
+        if (sessionData.role === "Dispatcher" && typeof incCounter === 'number') {
+          incCounter++;
         }
         
         renderTable();
@@ -959,21 +959,21 @@
         const tbody = document.getElementById('log-body');
         const thead = document.getElementById('log-head');
         tbody.innerHTML = "";
-        if (sessionData.role === "Deputy") {
+        if (sessionData.role === "Officer") {
           thead.innerHTML = `
 					<tr>
 					  <th style="width:9ch">UNIT</th>
 						<th style="width:35ch">LOCATION</th>
 						<th style="width:6ch">STRT</th>
 						<th style="width:6ch">END</th>
-						<th style="width:12ch">URN</th>
+						<th style="width:12ch">INCID</th>
 						<th>NARRATIVE</th>
 					</tr>`;
           logs.forEach(log => {
             const row = tbody.insertRow();
             row.ondblclick = () => {
-              document.getElementById('edit-tag-num').value = log.tag;
-              loadTagForEdit();
+              document.getElementById('edit-inc-num').value = log.incid;
+              loadIncForEdit();
             };
             if (log.notes == "DELETE") {
               row.remove();
@@ -991,7 +991,7 @@
         } else {
           thead.innerHTML = `
 					<tr>
-						<th>TAG</th>
+						<th>INCID</th>
 						<th>UNIT</th>
 						<th>TYP</th>
 						<th>CODE</th>
@@ -1001,22 +1001,23 @@
 						<th>NARRATIVE</th>
 						<th>RESP/HANDLE</th>
 						<th>CMP</th>
-						<th>SAM</th>
-						<th>AERO</th>
+						<th>SUP</th>
+						<th>AIR</th>
 					</tr>`;
           logs.forEach(log => {
             const row = tbody.insertRow();
             row.ondblclick = () => {
-              document.getElementById('edit-tag-num').value = log.tag;
-              loadTagForEdit();
+              document.getElementById('edit-inc-num').value = log.incid;
+              loadIncForEdit();
             };
             const displayHandle = log.handle ? log.handle : "";
             if (log.notes == "DELETE") {
               row.remove();
               playSound('delete');
             } else {
+                console.log(log);
               row.innerHTML = `
-							<td>${log.tag}</td>
+							<td>${log.incid}</td>
 							<td>${log.unit}</td>
 							<td>${log.type}</td>
 							<td>${log.callcode}</td>
@@ -1026,20 +1027,20 @@
 							<td class="col-notes">${log.notes}</td>
 							<td>${displayHandle}</td>
 							<td>${log.cmplt ? '✓' : ''}</td>
-							<td>${log.sam ? '✓' : ''}</td>
-							<td>${log.aero ? '✓' : ''}</td>`;
+							<td>${log.sup ? '✓' : ''}</td>
+							<td>${log.air ? '✓' : ''}</td>`;
             }
           });
         }
       }
       
-      //-- TAG LOAD UPDATER --\\
-      function loadTagForEdit() {
-        const searchTag = String(document.getElementById('edit-tag-num').value);
-        const entry = logs.find(l => String(l.tag) === searchTag);
+      //-- INCID LOAD UPDATER --\\
+      function loadIncForEdit() {
+        const searchInc = String(document.getElementById('edit-inc-num').value);
+        const entry = logs.find(l => String(l.incid) === searchInc);
         
         if (!entry) {
-          console.warn("No entry found for tag:", searchTag);
+          console.warn("No entry found for incident ID:", searchInc);
           return;
         }
         
@@ -1049,7 +1050,7 @@
         document.getElementById('f-end').value = entry.end || "";
         document.getElementById('f-notes').value = entry.notes || "";
         
-        if (sessionData.role === "Deputy") {
+        if (sessionData.role === "Officer") {
           const reportField = document.getElementById('f-report');
           if (reportField) reportField.value = entry.report || "";
         }
@@ -1062,37 +1063,37 @@
           document.getElementById('f-handle').value = entry.handle || "";
           
           if (document.getElementById('f-cmplt')) document.getElementById('f-cmplt').checked = !!entry.cmplt;
-          if (document.getElementById('f-sam')) document.getElementById('f-sam').checked = !!entry.sam;
-          if (document.getElementById('f-aero')) document.getElementById('f-aero').checked = !!entry.aero;
+          if (document.getElementById('f-sup')) document.getElementById('f-sup').checked = !!entry.sup;
+          if (document.getElementById('f-air')) document.getElementById('f-air').checked = !!entry.air;
         }
       }
       
       //-- UPDATE UPON SUBMIT --\\
       async function updateEntry() {
-        const tagRaw = document.getElementById('edit-tag-num').value;
+        const incidRaw = document.getElementById('edit-inc-num').value;
         const notesField = document.getElementById('f-notes');
         
-        if (!tagRaw) {
-          alert("ERROR: NO TAG LOADED. DOUBLE-CLICK AN ENTRY FIRST.");
+        if (!incidRaw) {
+          alert("ERROR: NO INCIDENT LOADED. DOUBLE-CLICK AN ENTRY FIRST.");
           return;
         }
         
-        const tagValue = String(tagRaw).trim();
+        const incidValue = String(incidRaw).trim();
         const noteContent = notesField.value.trim().toUpperCase();
         
         if (noteContent === "DELETE") {
-          const confirmDelete = confirm(`PERMANENTLY DELETE RECORD TAG: ${tagValue}?`);
+          const confirmDelete = confirm(`PERMANENTLY DELETE INCIDENT: ${incidValue}?`);
           if (confirmDelete) {
             const { error: delError } = await sbClient
                 .from('activity_logs')
                 .delete()
-                .eq('tag', tagValue);
+                .eq('incid', incidValue);
                 
             if (delError) {
               
               alert("DELETE FAILED: " + delError.message);
             } else {
-              const index = logs.findIndex(l => String(l.tag) === tagValue);
+              const index = logs.findIndex(l => String(l.incid) === incidValue);
               if (index !== -1) logs.splice(index, 1);
               renderTable();
               clearInputFields();
@@ -1110,7 +1111,7 @@
           notes: notesField.value
         };
         
-        if (sessionData.role === "Deputy") {
+        if (sessionData.role === "Officer") {
           updatedData.report_num = document.getElementById('f-report').value;
         } 
         
@@ -1119,24 +1120,24 @@
           updatedData.call_code = document.getElementById('f-callcode').value;
           updatedData.handle = document.getElementById('f-handle').value;
           updatedData.is_complete = document.getElementById('f-cmplt')?.checked || false;
-          updatedData.is_sam = document.getElementById('f-sam')?.checked || false;
-          updatedData.is_aero = document.getElementById('f-aero')?.checked || false;
+          updatedData.is_supervisor = document.getElementById('f-sup')?.checked || false;
+          updatedData.is_airship = document.getElementById('f-air')?.checked || false;
         }
         
         const { data, error } = await sbClient
           .from('activity_logs')
           .update(updatedData)
-          .eq('tag', tagValue)
+          .eq('incid', incidValue)
           .select(); 
 
         if (error) {
           console.error("Supabase Sync Error:", error);
           alert("DATABASE SYNC FAILED: " + error.message);
         } else if (!data || data.length === 0) {
-          console.error("No rows found matching tag:", tagValue);
-          alert(`SYNC ERROR: Record ${tagValue} not found in database. Check if the Tag column type is TEXT.`);
+          console.error("No rows found matching inc:", incidValue);
+          alert(`SYNC ERROR: Record ${incidValue} not found in database. Check if the Inc column type is TEXT.`);
         } else {
-          const index = logs.findIndex(l => String(l.tag) === tagValue);
+          const index = logs.findIndex(l => String(l.incid) === incidValue);
           if (index !== -1) {
             const entry = logs[index];
             entry.unit = updatedData.unit;
@@ -1145,7 +1146,7 @@
             entry.end = updatedData.time_end;
             entry.notes = updatedData.notes;
             
-            if (sessionData.role === "Deputy") {
+            if (sessionData.role === "Officer") {
               entry.report = updatedData.report_num;
             }
             
@@ -1154,27 +1155,27 @@
               entry.callcode = updatedData.call_code;
               entry.handle = updatedData.handle;
               entry.cmplt = updatedData.is_complete;
-              entry.sam = updatedData.is_sam;
-              entry.aero = updatedData.is_aero;
+              entry.sup = updatedData.is_supervisor;
+              entry.air = updatedData.is_airship;
             }
           }
           
           if (typeof playSound === 'function') playSound('update');
           renderTable();
           clearInputFields();
-          console.log(`Success: Tag ${tagValue} updated.`, data[0]);
+          console.log(`Success: Inc ${incidValue} updated.`, data[0]);
         }
       }
       
-      //-- FOR DEP LOGO --\\
+      //-- FOR DEPT LOGO --\\
       function triggerPrintFlow() {
-        const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/4/45/Badge_of_the_Sheriff_of_Los_Angeles_County.png';
+        const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Seal_of_the_Los_Angeles_Police_Department.png';
         const img = new Image();
         img.crossOrigin = 'Anonymous';
         img.src = logoUrl;
         img.onload = function() {
-          window.lasdLogoImg = img;
-          if (sessionData.role === "Deputy") {
+          window.lapdLogoImg = img;
+          if (sessionData.role === "Officer") {
             document.getElementById('sig-datetime').value = new Date().toLocaleString();
             document.getElementById('modal-overlay').style.display = 'flex';
           } else {
@@ -1194,13 +1195,13 @@
         const addHeader = (data) => {
           const pageWidth = doc.internal.pageSize.getWidth();
           const pageNum = doc.internal.getNumberOfPages();
-          if (sessionData.role === "Deputy") {
-            if (window.lasdLogoImg) {
-              doc.addImage(window.lasdLogoImg, 'PNG', 10, 5, 18, 22);
+          if (sessionData.role === "Officer") {
+            if (window.lapdLogoImg) {
+              doc.addImage(window.lapdLogoImg, 'PNG', 10, 5, 18, 22);
             }
             doc.setFont("helvetica", "bold");
             doc.setFontSize(16);
-            doc.text(["DEPUTY'S DAILY ACTIVITY LOG", `LOGS FOR ${date}`], 32, 14);
+            doc.text(["OFFICER'S DAILY ACTIVITY LOG", `LOGS FOR ${date}`], 32, 14);
           } else {
             doc.setFont("courier", "bold");
             doc.setFontSize(12);
@@ -1209,15 +1210,15 @@
           doc.setFontSize(10);
           doc.text(`Page ${pageNum} of ${totalPagesExp}`, pageWidth - 45, 14);
         };
-        if (sessionData.role === "Deputy") {
-          // Deputy Info Header
+        if (sessionData.role === "Officer") {
+          // Officer Info Header
           doc.autoTable({
             startY: 28,
             head: [
-              ['REPORTING OFFICER', 'RANK', 'ASSIGNMENT', 'PARTNER', 'BADGE #', 'DATE']
+              ['REPORTING OFFICER', 'RANK', 'ASSIGNMENT', 'PARTNER', 'SERIAL #', 'DATE']
             ],
             body: [
-              [sessionData.user, sessionData.rank, sessionData.assignment, sessionData.rideAlong ? sessionData.raName : "NONE", sessionData.rideAlong ? sessionData.raBadge : "N/A", date]
+              [sessionData.user, sessionData.rank, sessionData.assignment, sessionData.rideAlong ? sessionData.raName : "NONE", sessionData.rideAlong ? sessionData.raSerial : "N/A", date]
             ],
             theme: 'grid',
             headStyles: {
@@ -1228,11 +1229,11 @@
             },
             didDrawPage: addHeader
           });
-          // Deputy Activity Table
+          // Officer Activity Table
           const tableData = logs.slice().reverse().map(l => [l.unit, l.loc, l.start, l.end, l.report || "N/A", l.notes]);
           doc.autoTable({
             startY: doc.lastAutoTable.finalY + 5,
-            head: [ ['UNIT', 'LOCATION', 'START', 'END', 'REPORT #', 'NOTES'] ],
+            head: [ ['UNIT', 'LOCATION', 'START', 'END', 'INC ID', 'NOTES'] ],
             body: tableData,
             theme: 'grid',
             headStyles: { fillColor: [128, 128, 128] },
@@ -1245,7 +1246,7 @@
               1: { cellWidth: 70 }, // Location 
               2: { cellWidth: 15 }, // Start
               3: { cellWidth: 15 }, // End
-              4: { cellWidth: 30 }, // URN, OR RPT #
+              4: { cellWidth: 30 }, // INC #
               5: { cellWidth: 'auto' } // Narrative
             },
             didDrawPage: addHeader
@@ -1253,12 +1254,12 @@
         } else {
           // Dispatcher Activity Table
           const tableData = logs.slice().reverse().map(l => [
-            l.tag, l.unit, l.type, l.callcode, l.loc, l.start, l.end, l.notes, l.handle || "", l.cmplt ? 'Y' : 'N', l.sam ? 'Y' : 'N', l.aero ? 'Y' : 'N'
+            l.incid, l.unit, l.type, l.callcode, l.loc, l.start, l.end, l.notes, l.handle || "", l.cmplt ? 'Y' : 'N', l.sup ? 'Y' : 'N', l.air ? 'Y' : 'N'
           ]);
           doc.autoTable({
             startY: 25,
             head: [
-              ['TAG', 'UNIT', 'TYP', 'CODE', 'LOCATION', 'STRT', 'END', 'NARRATIVE', 'RESP/HANDLE', 'CMP', 'SAM', 'AERO']
+              ['INCID', 'UNIT', 'TYP', 'CODE', 'LOCATION', 'STRT', 'END', 'NARRATIVE', 'RESP/HANDLE', 'CMP', 'SUP', 'AIR']
             ],
             body: tableData,
             theme: 'grid',
@@ -1271,7 +1272,7 @@
               overflow: 'linebreak'
             },
             columnStyles: {
-              0: { cellWidth: 12 }, // Tag
+              0: { cellWidth: 12 }, // IncID
               1: { cellWidth: 18 }, // Unit
               2: { cellWidth: 15 }, // Type
               3: { cellWidth: 12 }, // Code
@@ -1281,13 +1282,13 @@
               7: { cellWidth: 'auto' }, // Narrative
               8: { cellWidth: 59 }, // RESP/HANDLE 
               9: { cellWidth: 8 }, // CMP
-              10: { cellWidth: 8 }, // SAM
-              11: { cellWidth: 9 } // AERO
+              10: { cellWidth: 8 }, // SUP
+              11: { cellWidth: 9 } // AIR
             },
             didDrawPage: addHeader
           });
         }
-        // Validation Sign-off for Deputy
+        // Validation Sign-off for Officer
         if (sessionData.signOff) {
           doc.autoTable({
             startY: doc.lastAutoTable.finalY + 10,
@@ -1317,7 +1318,7 @@
         if (typeof doc.putTotalPages === 'function') {
           doc.putTotalPages(totalPagesExp);
         }
-        doc.save(`LASD_LOG_${sessionData.user}_${date.replace(/\//g, '-')}.pdf`);
+        doc.save(`LAPD_LOG_${sessionData.user}_${date.replace(/\//g, '-')}.pdf`);
       }
       
       //-- Quick Status Buttons Handle --\\
@@ -1327,7 +1328,7 @@
         document.getElementById('qs-loc').value = document.getElementById('f-loc').value;
         document.getElementById('qs-notes').value = "";
         const locContainer = document.getElementById('qs-loc-container');
-        if (code === '10-6' || code === '10-7' || code === '10-8') {
+        if (code === 'AVALC4' || code === 'SOW' || code === 'EOW') {
           locContainer.style.display = 'none';
         } else {
           locContainer.style.display = 'block';
@@ -1341,7 +1342,7 @@
         const loc = document.getElementById('qs-loc').value;
         const notes = document.getElementById('qs-notes').value;
         setNow('f-start');
-        document.getElementById('f-end').value = (currentQSCode === '10-8') ? new Date().getHours().toString().padStart(2, '0') + new Date().getMinutes().toString().padStart(2, '0') : "####";
+        document.getElementById('f-end').value = (currentQSCode === 'SOW' || 'EOW') ? new Date().getHours().toString().padStart(2, '0') + new Date().getMinutes().toString().padStart(2, '0') : "####";
         document.getElementById('f-loc').value = loc;
         document.getElementById('f-notes').value = `${currentQSCode}${notes ? ' - ' + notes : ''}`;
         closeModal('quick-status-overlay');
